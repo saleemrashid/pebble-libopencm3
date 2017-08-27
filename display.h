@@ -28,3 +28,14 @@ typedef enum {
 void display_setup(void);
 void display_draw(const uint8_t *buffer);
 void display_draw_scene(PDisplayScene scene);
+
+#define DISPLAY_OFFSET_LSB(x, y) ((x) * DISPLAY_HEIGHT + (y) / 2)
+#define DISPLAY_OFFSET_MSB(x, y) (DISPLAY_OFFSET_LSB(x, y) + DISPLAY_HEIGHT / 2)
+
+#define DISPLAY_MASK_LSB 0b010101
+#define DISPLAY_MASK_MSB 0b101010
+
+static inline void display_set(uint8_t *buffer, uint8_t x, uint8_t y, uint8_t color) {
+    buffer[DISPLAY_OFFSET_LSB(x, y)] = buffer[DISPLAY_OFFSET_LSB(x, y)] & (DISPLAY_MASK_LSB << (~y & 1)) | (color & DISPLAY_MASK_LSB) <<  (y & 1);
+    buffer[DISPLAY_OFFSET_MSB(x, y)] = buffer[DISPLAY_OFFSET_MSB(x, y)] & (DISPLAY_MASK_MSB >>  (y & 1)) | (color & DISPLAY_MASK_MSB) >> (~y & 1);
+}
