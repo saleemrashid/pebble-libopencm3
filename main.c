@@ -15,6 +15,8 @@ static void usart_setup(void);
 
 int main(void) {
     usart_setup();
+    puts("\nHello World");
+
     display_setup();
 
     static const uint8_t colors[] = {
@@ -61,8 +63,6 @@ void usart_setup(void) {
     usart_set_mode(USART3, USART_MODE_TX_RX);
 
     usart_enable(USART3);
-
-    putc('\n', stdout);
 }
 
 ssize_t _write(int fd, const char *buf, size_t count) {
