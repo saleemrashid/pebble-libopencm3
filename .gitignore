@@ -1,7 +1,7 @@
 *.[od]
 
-!FPGA.bin
-
 *.bin
 *.elf
 *.hex
+
+!FPGA.bin
