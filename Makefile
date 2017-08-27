@@ -1,5 +1,7 @@
 OPENCM3_DIR     := $(abspath libopencm3)
 
+NAME            := firmware
+
 OBJS            += main.o
 OBJS            += display.o
 
@@ -25,7 +27,7 @@ PEBBLE_SDK	?= $(HOME)/.pebble-sdk/SDKs/current/sdk-core/pebble
 
 .PHONY: all clean qemu gdb
 
-all: firmware.bin firmware.elf
+all: $(NAME).bin
 
 clean:
 	$(Q)git clean -fdX
@@ -34,17 +36,13 @@ qemu: snowy.bin snowy_spi.bin
 	$(Q)$(QEMU) -machine pebble-snowy-bb -cpu cortex-m4 $(QEMUFLAGS) $(addprefix -pflash ,$^)
 
 gdb:
-	$(Q)$(GDB) -ex "target remote localhost:$(GDB_TCP_PORT)" -ex "sym $(abspath firmware.elf)"
+	$(Q)$(GDB) -ex "target remote localhost:$(GDB_TCP_PORT)" -ex "sym $(abspath $(NAME).elf)"
 
-snowy.bin: snowy_boot.bin firmware.bin
+snowy.bin: snowy_boot.bin $(NAME).bin
 	$(Q)cat $^ > $@
 
-# Empty recipe to override libopencm3 recipes
-FPGA.bin: ;
-$(PEBBLE_SDK)/%: ;
-
 FPGA.o: FPGA.bin
-	$(Q)$(OBJCOPY) -I binary -O elf32-littlearm -B arm --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
+	$(Q)$(OBJCOPY) -I binary -O elf32-littlearm -B arm --rename-section .data=.rodata $< $@
 
 snowy_boot.bin: $(PEBBLE_SDK)/basalt/qemu/qemu_micro_flash.bin
 	$(Q)head -c 16384 $< > $@
@@ -52,6 +50,16 @@ snowy_boot.bin: $(PEBBLE_SDK)/basalt/qemu/qemu_micro_flash.bin
 snowy_spi.bin: $(PEBBLE_SDK)/basalt/qemu/qemu_spi_flash.bin.bz2
 	$(Q)bzcat $< > $@
 
-include $(OPENCM3_DIR)/mk/gcc-rules.mk
+%.bin: %.elf
+	@printf "  OBJCOPY $@\n"
+	$(Q)$(OBJCOPY) -Obinary $< $@
+
+$(NAME).elf: $(OBJS) $(LDSCRIPT) $(LIBDEPS)
+	@printf "  LD      $@\n"
+	$(Q)$(LD) $(OBJS) $(LDLIBS) $(LDFLAGS) -T$(LDSCRIPT) $(ARCH_FLAGS)  -o $@
+
+%.o: %.c
+	@printf "  CC      $<\n"
+	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $@ -c $<
 
 -include $(OBJS:.o=.d)
