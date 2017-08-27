@@ -5,13 +5,22 @@
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/usart.h>
 
+#include "display.h"
+
 #define USART_CONSOLE USART3
 
-static void clock_setup(void) {
-    rcc_periph_clock_enable(RCC_USART3);
+static void usart_setup(void);
+
+int main(void) {
+    usart_setup();
+    display_setup();
+
+    return 0;
 }
 
-static void usart_setup(void) {
+void usart_setup(void) {
+    rcc_periph_clock_enable(RCC_USART3);
+
     usart_set_baudrate(USART3, 115200);
     usart_set_databits(USART3, 8);
     usart_set_stopbits(USART3, USART_STOPBITS_1);
@@ -20,6 +29,8 @@ static void usart_setup(void) {
     usart_set_mode(USART3, USART_MODE_TX_RX);
 
     usart_enable(USART3);
+
+    putc('\n', stdout);
 }
 
 ssize_t _write(int fd, const char *buf, size_t count) {
@@ -40,15 +51,4 @@ ssize_t _write(int fd, const char *buf, size_t count) {
 	errno = EIO;
 	return -1;
     }
-}
-
-int main(void) {
-    clock_setup();
-    usart_setup();
-
-    while (true) {
-	puts("Hello World");
-    }
-
-    return 0;
 }

@@ -1,6 +1,9 @@
 OPENCM3_DIR     := $(abspath libopencm3)
 
 OBJS            += main.o
+OBJS            += display.o
+
+OBJS            += FPGA.o
 
 CFLAGS          += -std=c99 -O3 -ggdb3
 CPPFLAGS        += -MD
@@ -37,8 +40,11 @@ snowy.bin: snowy_boot.bin firmware.bin
 	$(Q)cat $^ > $@
 
 # Empty recipe to override libopencm3 recipes
-$(PEBBLE_SDK)/%:
-	@
+FPGA.bin: ;
+$(PEBBLE_SDK)/%: ;
+
+FPGA.o: FPGA.bin
+	$(Q)$(OBJCOPY) -I binary -O elf32-littlearm -B arm --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
 
 snowy_boot.bin: $(PEBBLE_SDK)/basalt/qemu/qemu_micro_flash.bin
 	$(Q)head -c 16384 $< > $@
