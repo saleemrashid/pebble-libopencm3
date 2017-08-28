@@ -24,6 +24,9 @@ QEMU            ?= qemu-pebble
 QEMUFLAGS       ?= -rtc base=localtime -serial null -serial null -serial stdio -gdb tcp::$(GDB_TCP_PORT),server
 PEBBLE_SDK      ?= $(HOME)/.pebble-sdk/SDKs/current/sdk-core/pebble
 
+# We cannot include commas in addprefix without an intermediate variable
+QEMUFLAG_PFLASH := -drive if=pflash,format=raw,file=
+
 .PHONY: all clean qemu gdb
 
 ifeq ($(.DEFAULT_GOAL),)
@@ -34,7 +37,7 @@ clean:
 	$(Q)git clean -fdX
 
 qemu: qemu_micro_flash.bin $(TOP)qemu_spi_flash.bin
-	$(Q)$(QEMU) -machine pebble-snowy-bb -cpu cortex-m4 $(QEMUFLAGS) $(addprefix -pflash ,$^)
+	$(Q)$(QEMU) -machine pebble-snowy-bb -cpu cortex-m4 $(QEMUFLAGS) $(addprefix $(QEMUFLAG_PFLASH),$^)
 
 gdb:
 	$(Q)$(GDB) -ex "target remote localhost:$(GDB_TCP_PORT)" -ex "sym $(abspath $(NAME).elf)"
