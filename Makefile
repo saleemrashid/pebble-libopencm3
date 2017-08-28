@@ -1,6 +1,6 @@
 OPENCM3_DIR     := $(abspath libopencm3)
 
-NAME            := firmware
+NAME            := snowy_fw
 
 OBJS            += main.o
 OBJS            += display.o
@@ -32,13 +32,13 @@ all: $(NAME).bin
 clean:
 	$(Q)git clean -fdX
 
-qemu: snowy.bin snowy_spi.bin
+qemu: qemu_micro_flash.bin qemu_spi_flash.bin
 	$(Q)$(QEMU) -machine pebble-snowy-bb -cpu cortex-m4 $(QEMUFLAGS) $(addprefix -pflash ,$^)
 
 gdb:
 	$(Q)$(GDB) -ex "target remote localhost:$(GDB_TCP_PORT)" -ex "sym $(abspath $(NAME).elf)"
 
-snowy.bin: snowy_boot.bin $(NAME).bin
+qemu_micro_flash.bin: snowy_boot.bin $(NAME).bin
 	$(Q)cat $^ > $@
 
 FPGA.o: FPGA.bin
@@ -47,7 +47,7 @@ FPGA.o: FPGA.bin
 snowy_boot.bin: $(PEBBLE_SDK)/basalt/qemu/qemu_micro_flash.bin
 	$(Q)head -c 16384 $< > $@
 
-snowy_spi.bin: $(PEBBLE_SDK)/basalt/qemu/qemu_spi_flash.bin.bz2
+qemu_spi_flash.bin: $(PEBBLE_SDK)/basalt/qemu/qemu_spi_flash.bin.bz2
 	$(Q)bzcat $< > $@
 
 %.bin: %.elf
