@@ -29,8 +29,7 @@ typedef enum {
 #define DISPLAY_SIZE (DISPLAY_WIDTH * DISPLAY_HEIGHT)
 
 void display_setup(void);
-void display_draw(const uint8_t *buffer);
-void display_draw_scene(PDisplayScene scene);
+void display_frame_begin(const uint8_t *buffer);
 
 #define DISPLAY_OFFSET_LSB(x, y) ((x) * DISPLAY_HEIGHT + (DISPLAY_HEIGHT - (y) - 1) / 2)
 #define DISPLAY_OFFSET_MSB(x, y) (DISPLAY_OFFSET_LSB(x, y) + DISPLAY_HEIGHT / 2)

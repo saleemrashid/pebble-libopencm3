@@ -21,6 +21,8 @@
 #define PIN_INTN      GPIO10
 
 static void display_cs(bool enabled);
+static void display_draw_scene(PDisplayScene scene);
+
 static bool display_fpga_wait_ready(uint32_t wait);
 static void display_fpga_reset(bool cs);
 static void display_fpga_program(void);
@@ -67,7 +69,7 @@ void display_setup(void) {
     display_fpga_program();
 }
 
-void display_draw(const uint8_t *buffer) {
+void display_frame_begin(const uint8_t *buffer) {
     delay(20);
     display_cs(true);
     delay(2000);

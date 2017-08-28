@@ -38,7 +38,7 @@ int main(void) {
                 display_set(display, x + 1, y + 1, color);
             }
 
-	    display_draw(display);
+	    display_frame_begin(display);
         }
     }
 
