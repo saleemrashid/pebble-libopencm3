@@ -18,7 +18,6 @@ void __wrap_oledRefresh(void) {
 	uint8_t x = (OLED_BUFSIZE - 1 - i) % OLED_WIDTH;
 	uint8_t y = (OLED_BUFSIZE - 1 - i) / OLED_WIDTH * 8 + 7;
 
-	uint8_t shift = 0;
 	for (uint8_t shift = 0; shift < 8; shift++, y--) {
 	    uint8_t color = (oledbuffer[i] >> shift) & 1 ? GColorWhiteARGB8 : GColorBlackARGB8;
 
