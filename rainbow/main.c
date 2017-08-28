@@ -13,13 +13,13 @@ int main(void) {
     display_setup();
 
     static const uint8_t colors[] = {
-	0b110000, // Red
-	0b110100, // Orange
-	0b111100, // Yellow
-	0b001100, // Green
-	0b000011, // Blue
-	0b010010, // Indigo
-	0b100010, // Purple
+	GColorRedARGB8,
+	GColorOrangeARGB8,
+	GColorYellowARGB8,
+	GColorGreenARGB8,
+	GColorBlueARGB8,
+	GColorIndigoARGB8,
+	GColorPurpleARGB8,
     };
 
     uint8_t index = 0;

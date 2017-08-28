@@ -4,6 +4,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "colors.h"
+
 typedef enum {
     PSDISPLAYCMD0_NULL = 0,
     PSDISPLAYCMD0_SET_PARAMETER = 1,
