@@ -1,3 +1,6 @@
+#ifndef _DISPLAY_H_
+#define _DISPLAY_H_
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -43,3 +46,5 @@ static inline void display_set(uint8_t *buffer, uint8_t x, uint8_t y, uint8_t co
 static inline uint8_t display_get(const uint8_t *buffer, uint8_t x, uint8_t y) {
     return (buffer[DISPLAY_OFFSET_LSB(x, y)] >>  (y & 1)) & DISPLAY_MASK_LSB | (buffer[DISPLAY_OFFSET_MSB(x, y)] << (~y & 1)) & DISPLAY_MASK_MSB;
 }
+
+#endif /* _DISPLAY_H_ */
