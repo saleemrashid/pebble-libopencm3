@@ -4,6 +4,7 @@ NAME            := snowy_fw
 
 OBJS            += main.o
 OBJS            += display.o
+OBJS            += usart.o
 
 OBJS            += FPGA.o
 
