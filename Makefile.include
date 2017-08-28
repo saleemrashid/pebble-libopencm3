@@ -1,6 +1,10 @@
 TOP		:= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 OPENCM3_DIR     := $(TOP)libopencm3
 
+ifneq ($(V),1)
+Q := @
+endif
+
 CFLAGS          += -std=c99 -O3 -ggdb3
 CPPFLAGS        += -MD
 LDSCRIPT        := $(TOP)linker.ld
