@@ -42,9 +42,6 @@ gdb:
 qemu_micro_flash.bin: $(TOP)snowy_boot.bin $(NAME).bin
 	$(Q)cat $^ > $@
 
-FPGA.o: FPGA.bin
-	$(Q)$(OBJCOPY) -I binary -O elf32-littlearm -B arm --rename-section .data=.rodata $< $@
-
 $(TOP)snowy_boot.bin: $(PEBBLE_SDK)/basalt/qemu/qemu_micro_flash.bin
 	$(Q)head -c 16384 $< > $@
 
