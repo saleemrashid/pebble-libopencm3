@@ -5,7 +5,7 @@ ifneq ($(V),1)
 Q := @
 endif
 
-CFLAGS          += -std=c99 -O3 -ggdb3
+CFLAGS          += -std=gnu99 -O3 -ggdb3
 CFLAGS          += -Wall -Wextra -Werror
 CPPFLAGS        += -MD
 LDSCRIPT        := $(TOP)linker.ld
