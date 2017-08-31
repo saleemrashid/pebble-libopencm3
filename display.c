@@ -42,7 +42,7 @@ void display_setup(void) {
     gpio_mode_setup(PORT_DISPLAY, GPIO_MODE_INPUT, GPIO_PUPD_NONE, PIN_RST_DONE | PIN_INTN);
 
     /* SPI_DISPLAY */
-    gpio_mode_setup(PORT_DISPLAY, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, PIN_MISO | PIN_MOSI | PIN_SCK);
+    gpio_mode_setup(PORT_DISPLAY, GPIO_MODE_AF, GPIO_PUPD_NONE, PIN_MISO | PIN_MOSI | PIN_SCK);
     gpio_set_af(PORT_DISPLAY, GPIO_AF5, PIN_MISO | PIN_MOSI | PIN_SCK);
     spi_set_master_mode(SPI_DISPLAY);
     spi_set_dff_8bit(SPI_DISPLAY);
