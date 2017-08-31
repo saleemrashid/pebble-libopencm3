@@ -1,5 +1,6 @@
 NAME            := pebble_opencm3
 
+OBJS            += backlight.o
 OBJS            += display.o
 OBJS            += usart.o
 

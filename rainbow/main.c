@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "backlight.h"
 #include "display.h"
 #include "usart.h"
 
@@ -21,6 +22,7 @@ int main(void) {
     puts("\nHello World");
 
     display_setup();
+    backlight_setup();
 
     static const uint8_t colors[] = {
 	GColorRedARGB8,
@@ -33,9 +35,11 @@ int main(void) {
     };
 
     uint8_t index = 0;
+    uint8_t backlight = 0;
     while (true) {
         for (uint8_t x = 0; x < DISPLAY_WIDTH; x += BLOCK_SIZE) {
 	    index++;
+	    backlight_set(backlight++);
 
             for (uint8_t y = 0; y < DISPLAY_HEIGHT; y += BLOCK_SIZE) {
 		index = (index + 1) % sizeof(colors);
