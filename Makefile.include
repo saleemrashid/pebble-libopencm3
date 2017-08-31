@@ -19,6 +19,8 @@ LDLIBS          += -lopencm3_stm32f4
 
 include $(OPENCM3_DIR)/mk/gcc-config.mk
 
+MAGICK          ?= convert
+
 GDB_TCP_PORT    ?= 63770
 QEMU            ?= qemu-pebble
 QEMUFLAGS       ?= -rtc base=localtime -serial null -serial null -serial stdio -gdb tcp::$(GDB_TCP_PORT),server
@@ -66,5 +68,14 @@ lib$(NAME).a: $(OBJS)
 %.o: %.c
 	@printf "  CC      $<\n"
 	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $@ -c $<
+
+%.h: %.png
+	@printf "  MAGICK  $<\n"
+	$(Q)$(MAGICK) $< \
+		-alpha on \
+		-color-matrix "0 0 0 1, 1 0 0 0, 0 1 0 0, 0 0 1 0" \
+		-define h:format=rgba \
+		-depth 2 \
+		$@
 
 -include $(OBJS:.o=.d)

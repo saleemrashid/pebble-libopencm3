@@ -49,4 +49,12 @@ static inline uint8_t display_get(const uint8_t *buffer, uint8_t x, uint8_t y) {
          | ((buffer[DISPLAY_OFFSET_MSB(x, y)] << (~y & 1)) & DISPLAY_MASK_MSB);
 }
 
+static inline void display_draw_bitmap(uint8_t *display, const uint8_t *bitmap) {
+    for (uint8_t y = 0; y < DISPLAY_HEIGHT; y++) {
+	for (uint8_t x = 0; x < DISPLAY_WIDTH; x++) {
+	    display_set(display, x, y, *bitmap++);
+	}
+    }
+}
+
 #endif /* _DISPLAY_H_ */
