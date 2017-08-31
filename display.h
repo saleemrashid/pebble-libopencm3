@@ -33,11 +33,11 @@ typedef enum {
 void display_setup(void);
 void display_frame_begin(const uint8_t *buffer);
 
-#define DISPLAY_OFFSET_LSB(x, y) ((x) * DISPLAY_HEIGHT + (DISPLAY_HEIGHT - (y) - 1) / 2)
-#define DISPLAY_OFFSET_MSB(x, y) (DISPLAY_OFFSET_LSB(x, y) + DISPLAY_HEIGHT / 2)
+#define DISPLAY_OFFSET_MSB(x, y) ((x) * DISPLAY_HEIGHT + (DISPLAY_HEIGHT - (y) - 1) / 2)
+#define DISPLAY_OFFSET_LSB(x, y) (DISPLAY_OFFSET_MSB(x, y) + DISPLAY_HEIGHT / 2)
 
 #define DISPLAY_MASK_LSB 0b010101
-#define DISPLAY_MASK_MSB 0b101010
+#define DISPLAY_MASK_MSB (DISPLAY_MASK_LSB << 1)
 
 static inline void display_set(uint8_t *buffer, uint8_t x, uint8_t y, uint8_t color) {
     buffer[DISPLAY_OFFSET_LSB(x, y)] = (buffer[DISPLAY_OFFSET_LSB(x, y)] & (DISPLAY_MASK_LSB << (~y & 1))) | (color & DISPLAY_MASK_LSB) <<  (y & 1);
