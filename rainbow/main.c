@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "backlight.h"
+#include "clock.h"
 #include "display.h"
 #include "usart.h"
 
@@ -18,6 +19,8 @@ static inline void draw_block(uint8_t *buffer, uint8_t _x, uint8_t _y, uint8_t _
 }
 
 int main(void) {
+    clock_setup();
+
     usart_setup();
     puts("\nHello World");
 

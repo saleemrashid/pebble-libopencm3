@@ -5,8 +5,10 @@
 #include <libopencm3/stm32/rcc.h>
 
 #include "backlight.h"
+#include "clocks.h"
 
 int main(void) {
+    clocks_setup();
     backlight_setup();
 
     rcc_periph_clock_enable(RCC_GPIOG);

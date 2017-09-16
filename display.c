@@ -149,5 +149,5 @@ void delay(uint32_t wait) {
 }
 
 void delay_us(uint32_t wait) {
-    delay(wait * 22);
+    delay(wait * 137);
 }
