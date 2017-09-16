@@ -29,7 +29,9 @@ static void display_fpga_program(void);
 
 static inline void display_send(uint8_t data);
 static inline void display_send_all(const uint8_t *data, size_t size);
+
 static inline void delay(uint32_t wait);
+static inline void delay_us(uint32_t wait);
 
 void display_setup(void) {
     rcc_periph_clock_enable(CLOCK_DISPLAY);
@@ -65,25 +67,23 @@ void display_setup(void) {
 	display_fpga_reset(false);
     }
 
+    display_cs(true);
+    display_send(PSDISPLAYCMD0_DISPLAY_ON);
+    display_cs(false);
+
     display_fpga_reset(true);
     display_fpga_program();
 }
 
 void display_frame_begin(const uint8_t *buffer) {
-    delay(20);
     display_cs(true);
-    delay(2000);
     display_send(PSDISPLAYCMD1_FRAME_BEGIN);
-    display_cs(false);
-    display_cs(true);
     display_send_all(buffer, DISPLAY_SIZE);
     display_cs(false);
 }
 
 void display_draw_scene(PDisplayScene scene) {
-    delay(20);
     display_cs(true);
-    delay(2000);
     display_send(PSDISPLAYCMD0_DRAW_SCENE);
     display_send(scene);
     display_cs(false);
@@ -92,7 +92,9 @@ void display_draw_scene(PDisplayScene scene) {
 void display_cs(bool enabled) {
     /* Inverted */
     if (enabled) {
+	delay_us(1);
 	gpio_clear(PORT_DISPLAY, PIN_CS);
+	delay_us(100);
     } else {
 	gpio_set(PORT_DISPLAY, PIN_CS);
     }
@@ -104,7 +106,7 @@ bool display_fpga_wait_ready(uint32_t wait) {
 	    return true;
 	}
 
-	delay(4000);
+	delay_us(200);
     }
 
     return false;
@@ -114,9 +116,9 @@ void display_fpga_reset(bool cs) {
     display_cs(cs);
     gpio_clear(PORT_DISPLAY, PIN_RST);
     display_cs(true);
-    delay(20);
+    delay_us(1);
     gpio_set(PORT_DISPLAY, PIN_RST);
-    delay(20);
+    delay_us(1);
 }
 
 void display_fpga_program(void) {
@@ -144,4 +146,8 @@ void delay(uint32_t wait) {
     while (--wait > 0) {
 	__asm__("nop");
     }
+}
+
+void delay_us(uint32_t wait) {
+    delay(wait * 22);
 }
