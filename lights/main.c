@@ -14,7 +14,6 @@ int main(void) {
 
     uint8_t backlight = 0x80;
     while (true) {
-	iwdg_reset();
 	backlight_set(backlight);
 
 	for (uint32_t wait = 0; wait < 50000; wait++) {
@@ -22,6 +21,10 @@ int main(void) {
 	}
 
 	uint32_t state = gpio_port_read(GPIOG);
+
+	if ((state & (GPIO2 | GPIO3)) != (GPIO2 | GPIO3)) {
+	    iwdg_reset();
+	}
 
 	if ((state & GPIO2) == 0 && backlight > 0) {
 	    backlight--;
