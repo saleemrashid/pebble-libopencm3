@@ -39,7 +39,6 @@ int main(void) {
     while (true) {
         for (uint8_t x = 0; x < DISPLAY_WIDTH; x += BLOCK_SIZE) {
 	    index++;
-	    backlight_set(backlight++);
 
             for (uint8_t y = 0; y < DISPLAY_HEIGHT; y += BLOCK_SIZE) {
 		index = (index + 1) % sizeof(colors);
@@ -47,6 +46,12 @@ int main(void) {
             }
 
 	    display_frame_begin(display);
+
+	    for (uint32_t wait = 0; wait < 30000; wait++) {
+		__asm__("nop");
+	    }
+
+	    backlight_set(backlight++);
         }
     }
 
