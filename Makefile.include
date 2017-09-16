@@ -12,6 +12,9 @@ LDSCRIPT        := $(TOP)linker.ld
 LDFLAGS         += -static -nostartfiles
 LDLIBS          += -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
 
+CFLAGS          += -fdata-sections -ffunction-sections
+LDFLAGS         += -Wl,--gc-sections
+
 ARCH_FLAGS      += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CPPFLAGS        += -I$(TOP) -I$(OPENCM3_DIR)/include -DSTM32F4
 LDFLAGS         += -L$(TOP) -L$(OPENCM3_DIR)/lib
