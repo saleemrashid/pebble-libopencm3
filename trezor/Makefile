@@ -84,6 +84,9 @@ OBJS            += $(TREZOR_DIR)/vendor/trezor-qrenc/qr_encode.o
 LDLIBS          += -lpebble_opencm3
 LIBDEPS         += $(TOP)libpebble_opencm3.a
 
+LDLIBS          += -lpebble_bluetooth
+LIBDEPS         += $(TOP)bluetooth/libpebble_bluetooth.a
+
 include ../Makefile.include
 
 CPPFLAGS        += -I.

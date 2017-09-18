@@ -3,14 +3,21 @@
 
 #include "usb.h"
 
+#include <libopencm3/stm32/iwdg.h>
+
+#include "bt.h"
 #include "timer.h"
 
 static bool tiny = false;
 
 void usbInit(void) {
+    bluetooth_setup();
 }
 
 void usbPoll(void) {
+    iwdg_reset();
+
+    bluetooth_poll();
 }
 
 void usbReconnect(void) {
@@ -23,7 +30,7 @@ char usbTiny(char set) {
 }
 
 void usbSleep(uint32_t millis) {
-    uint32_t start = millis;
+    uint32_t start = system_millis;
 
-    while ((system_millis - start) < millis) {}
+    while ((system_millis - start) < millis);
 }

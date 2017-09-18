@@ -4,3 +4,6 @@
 [submodule "trezor-mcu"]
 	path = trezor/trezor-mcu
 	url = https://github.com/trezor/trezor-mcu.git
+[submodule "btstack"]
+	path = bluetooth/btstack
+	url = https://github.com/bluekitchen/btstack.git

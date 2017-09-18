@@ -16,8 +16,8 @@ CFLAGS          += -fdata-sections -ffunction-sections
 LDFLAGS         += -Wl,--gc-sections
 
 ARCH_FLAGS      += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
-CPPFLAGS        += -I$(TOP) -I$(OPENCM3_DIR)/include -DSTM32F4
-LDFLAGS         += -L$(TOP) -L$(OPENCM3_DIR)/lib
+CPPFLAGS        += -I$(TOP) -I$(TOP)bluetooth -I$(OPENCM3_DIR)/include -DSTM32F4
+LDFLAGS         += -L$(TOP) -L$(TOP)bluetooth -L$(OPENCM3_DIR)/lib
 LDLIBS          += -lopencm3_stm32f4
 
 include $(OPENCM3_DIR)/mk/gcc-config.mk
